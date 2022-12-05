@@ -1,0 +1,93 @@
+/* Entities */
+entity CINEMA {
+    CodCinema (id),
+    NomeCinema,
+    Citta
+}
+entity TEMPO {
+    Giorno (id),
+    OraApertura (id)
+}
+entity SALA {
+    CodSala (external),
+    NomeSala,
+    Capacita,
+    DispDisabilita (optional)
+}
+entity FILM {
+    CodFilm (id),
+    Titolo,
+    Genere (multi),
+    Durata,
+    AnnoUscita
+}
+entity DIPENDENTI_SOCIETA {
+    CodFiscale (id),
+    Nome,
+    DataAssunzione,
+    Cognome
+}
+entity LAVORO {
+    DataInizio (external),
+    DataFine
+}
+entity BIGLIETTAIO {
+    ElencoLingue (multi)
+}
+entity PERSONALE_PROIEZIONE
+entity PROIEZIONE {
+    Data (external),
+    OraInizio (external),
+    OraFine
+}
+entity CLIENTE {
+    CodBiglietto (id),
+    Nome,
+    Posto
+}
+
+/* Relationships */
+relationship ORARIO (
+    CINEMA: one..many,
+    TEMPO: one..many
+) {
+    OraChiusura
+}
+relationship APPARTIENE (
+    CINEMA: one..many,
+    SALA: one..one external
+)
+relationship HA (
+    DIPENDENTI_SOCIETA: one..many,
+    LAVORO: one..one external
+)
+relationship PRESSO (
+    LAVORO: one..one,
+    CINEMA: one..many
+)
+relationship IN (
+    SALA: one..many,
+    PROIEZIONE: one..one external
+)
+relationship DA (
+    PROIEZIONE: one..one,
+    FILM: one..many
+)
+relationship ASSISTONO (
+    CLIENTE: one..many,
+    PROIEZIONE: one..many
+)
+relationship LAVORA_IN (
+    PERSONALE_PROIEZIONE: one..many,
+    PROIEZIONE: one..one
+)
+relationship HA_VENDUTO (
+    CLIENTE: one..one,
+    BIGLIETTAIO: one..many
+)
+
+/* Generalizations */
+DIPENDENTI_SOCIETA <= {
+    BIGLIETTAIO,
+    PERSONALE_PROIEZIONE
+} (total, exclusive)
